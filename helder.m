@@ -1,27 +1,28 @@
-[x,fs]=audioread("D:\020622\Фильтрованные\14\НЧ\1.wav");
-t=linspace(0,length(x)/fs,length(x));
+% [x,fs]=audioread("D:\020622\Фильтрованные\14\НЧ\1.wav");
+[data,annotations] = edfread("C:\Users\Евгений\Downloads\crit_pack\edf\01_ГУСА.edf");
+
+info = edfinfo("C:\Users\Евгений\Downloads\crit_pack\edf\01_ГУСА.edf");
+fs = info.NumSamples/seconds(info.DataRecordDuration);
+recnum = 1;
+signum = 1;
+t = (0:info.NumSamples(signum)-1)/fs(signum);
+x = data.(signum){recnum};
+
+fs=fs(2,1);
+
 figure();
 plot(t,x);
 grid();
-sound(x,fs);
-time_interval=10;
-sample_interval = time_interval * fs;
-sample_start=0;
-sample_finish = sample_interval;
-start_sample=1;
-finish_sample=sample_interval;
-%%X = zeros(length(x));
-i=1;
-while sampl_finish <= length(x)
-    hexp = wtmm(x(start_sample:finish_sample));
-    sample_start=sample_finish;
-    sampl_finish=sample_start+sample_finish;
-    X(i)=hexp;
-    i=i+1;    
-end
+%sound(x,fs);
 
-t=linspace(0,length(x)/fs,length(X));
+[localhexp,wt,wavscales]=wtmm(x,'ScalingExponent','local');
 figure();
-plot(t,X);
+plot(localhexp);
 grid();
+
+
+
+
+
+
 
